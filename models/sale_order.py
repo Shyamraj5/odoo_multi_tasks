@@ -7,27 +7,28 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
         for order in self:
-            if order.picking_ids:
-                order.picking_ids.button_validate()
-                order._create_invoices()
-                invoice_line = order.invoice_ids
-                for invoice in invoice_line:
-                    invoice.action_post()
-                    payment_vals = {
-                        'partner_id': order.partner_id.id,
-                        'payment_type': 'inbound',
-                        'amount': invoice.amount_total,
-                        'payment_method_id': invoice.payment_id.payment_method_id.id
-                    }
-                    payment = self.env['account.payment'].create(payment_vals)
-                    payment.action_post()
+            if self.is_quick_sale_order != True:
+                if order.picking_ids:
+                    order.picking_ids.button_validate()
+                    order._create_invoices()
+                    invoice_line = order.invoice_ids
+                    for invoice in invoice_line:
+                        invoice.action_post()
+                        payment_vals = {
+                            'partner_id': order.partner_id.id,
+                            'payment_type': 'inbound',
+                            'amount': invoice.amount_total,
+                            'payment_method_id': invoice.payment_id.payment_method_id.id
+                        }
+                        payment = self.env['account.payment'].create(payment_vals)
+                        payment.action_post()
 
-                payments = [{
-                    'payment': payment,
-                    'to_reconcile': invoice.line_ids,
-                }]
-                payment = self.env['account.payment.register']._reconcile_payments(payments)
+                    payments = [{
+                        'payment': payment,
+                        'to_reconcile': invoice.line_ids,
+                    }]
+                    payment = self.env['account.payment.register']._reconcile_payments(payments)
 
-        return res
-                    
-# #Finally Done
+            return res
+                        
+    # #Finally Done
