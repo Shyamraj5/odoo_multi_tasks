@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+            id="sale_order_menu"
+            sequence="20"
+            action="sale_order_action"
+            parent="sale.product_menu_catalog"/>
+
+</odoo>
