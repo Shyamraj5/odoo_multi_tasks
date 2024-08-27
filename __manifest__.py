@@ -5,9 +5,11 @@
     'author': 'shyamraj',
     'website': 'https://github.com/Shyamraj5',
     'category': 'Sales',
-    'depends': ['sale'],
+    'depends': ['sale','stock','base'],
     'data': [
              "views/sale_order.xml",
+             "views/res_config.xml",
+             "views/menu.xml"
              ],
     'installable': True,
     'auto_install': False,
