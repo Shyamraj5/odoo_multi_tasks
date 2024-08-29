@@ -4,7 +4,7 @@ from odoo import models, fields
 class ResConfig(models.TransientModel):
     _inherit = "res.config.settings"
 
-    check_quick_sale_order = fields.Boolean("Quick Sale Order",config_parameter="odoo_multi_tasks.check_quick_sale_order",default=False)
+    check_quick_sale_order = fields.Boolean("Quick Sale Order",config_parameter="odoo_multi_tasks.check_quick_sale_order")
 
 
 

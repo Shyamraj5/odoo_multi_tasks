@@ -7,8 +7,10 @@
     'category': 'Sales',
     'depends': ['sale','stock','base'],
     'data': [
+             "security/ir.model.access.csv",
              "views/sale_order.xml",
              "views/res_config.xml",
+             'wizard/sale_report_wizard.xml',
              "views/menu.xml"
              ],
     'installable': True,
