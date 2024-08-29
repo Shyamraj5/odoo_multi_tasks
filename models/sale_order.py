@@ -4,6 +4,9 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     is_quick_sale_order = fields.Boolean(string="Is quck sale order", default="False")
 
+
+
+
     def action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
         for order in self:
@@ -32,3 +35,5 @@ class SaleOrder(models.Model):
             return res
                         
     # #Finally Done
+
+
