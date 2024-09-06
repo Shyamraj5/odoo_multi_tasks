@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_pdf_form" model="ir.ui.view">
+        <field name="name">sale.pdf.wizard.form</field>
+        <field name="model">sale.order.report.pdf</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <!-- <group>
+                        <field name="customer_id" widget="many2many_tags"/>
+                    </group> -->
+                    <group>
+                        <field name="from_date"/>
+                        <field name="to_date"/>
+                    </group>
+                </group>
+            <footer>
+                <button name="action_print_excel" string="Print Excel" type="object" class="btn-primary"/>
+                <button name="cancel" string="Cancel" special="cancel" class="btn-secondary"/>
+            </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_sale_report_pdf_wizard" model="ir.actions.act_window">
+        <field name="name">Wizard</field>
+        <field name="res_model">sale.order.report.pdf</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem 
+        id="Daily_sale_report"
+        sequence="20"
+        name="Daily sale report"
+        action="odoo_multi_tasks.action_sale_report_pdf_wizard"
+        parent="sale.menu_sale_report"/>
+</odoo>
