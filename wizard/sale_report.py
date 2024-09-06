@@ -10,3 +10,6 @@ class SaleDailyReportPdf(models.TransientModel):
 
     from_date = fields.Date(string="Start Date")
     to_date = fields.Date(string="End Date")
+
+    def print_pdf(self):
+        pass
