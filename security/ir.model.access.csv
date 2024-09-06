@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 sale.order.report.pdf,access_sale_order_report_pdf,model_sale_order_report_pdf,base.group_user,1,1,1,1
-
+access_sale_order_wizard,sale.order.wizard,model_sale_order_wizard,,1,1,1,1

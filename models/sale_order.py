@@ -3,8 +3,7 @@ from odoo import models, fields
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     is_quick_sale_order = fields.Boolean(string="Is quck sale order", default="False")
-
-
+    
 
 
     def action_confirm(self):
@@ -33,6 +32,20 @@ class SaleOrder(models.Model):
                     payment = self.env['account.payment.register']._reconcile_payments(payments)
 
             return res
+    
+
+    def open_confirm_wizard(self):
+        self.ensure_one()  # Ensure that only one sale order is processed
+        return {
+            'name': 'Confirm Sale Order',
+            'type': 'ir.actions.act_window',
+            'res_model': 'sale.order.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_sale_order_id': self.id,
+            },
+        }
                         
     # #Finally Done
 

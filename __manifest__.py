@@ -11,6 +11,7 @@
              "views/sale_order.xml",
              "views/res_config.xml",
              'wizard/sale_report_wizard.xml',
+             "wizard/sale_order_confirm_wizard.xml",
              "views/menu.xml"
              ],
     'installable': True,
