@@ -8,10 +8,12 @@
     'depends': ['sale','stock','base'],
     'data': [
              "security/ir.model.access.csv",
+             "report/daily_sales_report_views.xml",
+             "report/daily_sales_report.xml",
+             'wizard/sale_report_wizard.xml',
              "views/sale_order.xml",
              "views/res_config.xml",
-             'wizard/sale_report_wizard.xml',
-             "views/menu.xml"
+             "views/menu.xml",
              ],
     'installable': True,
     'auto_install': False,
