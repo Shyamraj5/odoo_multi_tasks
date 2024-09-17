@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <template id="reservation_report">
+        
+            <!-- Header Section -->
+            <div class="header">
+                <div class="row">
+                    <div class="col-12" >
+                        <!-- Display only the main company logo -->
+                        <img t-att-src="'/odoo_multi_tasks/static/src/img/icon.jpg'" style="width: 100%; height: 80px;"/>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="article o_report_layout_standard" 
+                 t-att-data-oe-model="o and o._name" 
+                 t-att-data-oe-id="o and o.id" 
+                 t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-call="web.address_layout"/>
+                <t t-raw="0"/>
+            </div>
+
+            <!-- Footer Section -->
+            
+       
+    </template>
+
+</odoo>

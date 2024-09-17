@@ -1,37 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <template id="report_template">
-    <t t-call="web.external_layout">
-        <div class="page">
-            <main>
-                <h2>Daily Sales Report</h2>
-                <p><strong>From:</strong> <t t-esc="data['start_date']"/> <strong>To:</strong> <t t-esc="data['end_date']"/></p>
-                <table class="table table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Order No</th>
-                            <th>Date</th>
-                            <th>Customer</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="orders" t-as="order">
-                            <tr>
-                                <td><t t-esc="order['order_no']"/></td>
-                                <td><t t-esc="order['date']"/></td>
-                                <td><t t-esc="order['customer']"/></td>
-                                <td><t t-esc="order['amount']"/></td>
-                            </tr>
-                        </t>
-                    </tbody>
-                </table>
-            </main>
-        </div>
-    </t>
-</template>
+        <t t-call="web.html_container">
+            <!-- Correctly calling the reservation report header template -->
+            <t t-call="odoo_multi_tasks.reservation_report">
+                <div class="page" style="font-family: Arial, sans-serif; padding: 20px;">
+                    <main style="margin-top: 20px;">
+                        <!-- Title Section -->
+                        <h2 style="text-align: center; color: #d7ce2b; border-bottom: 2px solid #e29103; padding-bottom: 10px; font-size: 24px;">
+                            Daily Sales Report
+                        </h2>
 
+                        <!-- Date Range Section -->
+                        <p style="text-align: center; font-size: 14px; color: #e29103;">
+                            <strong style="color: #d7ce2b;">From:</strong> <t t-esc="data['start_date']"/> 
+                            <strong style="color: #d7ce2b;">To:</strong> <t t-esc="data['end_date']"/>
+                        </p>
 
-
+                        <!-- Table Section -->
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px;">
+                            <thead>
+                                <tr style="background-color: #e29103; color: white; text-align: left;">
+                                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">Order No</th>
+                                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">Date</th>
+                                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">Customer</th>
+                                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="orders" t-as="order">
+                                    <tr style="background-color:#51eba2">
+                                        <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                                            <t t-esc="order['order_no']"/>
+                                        </td>
+                                        <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                                            <t t-esc="order['date']"/>
+                                        </td>
+                                        <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                                            <t t-esc="order['customer']"/>
+                                        </td>
+                                        <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">
+                                            <t t-esc="order['amount']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        
+                    </main>
+                </div>
+            </t>
+        </t>
+    </template>
 </odoo>

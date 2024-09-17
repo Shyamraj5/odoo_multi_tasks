@@ -10,6 +10,7 @@
              "security/ir.model.access.csv",
              "report/daily_sales_report_views.xml",
              "report/daily_sales_report.xml",
+             "report/sale_report_header.xml",
              "data/email_scheduler.xml",
              "data/email_template.xml",
              "data/res_group.xml",
