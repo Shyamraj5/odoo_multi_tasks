@@ -12,6 +12,7 @@
              "report/daily_sales_report.xml",
              "data/email_scheduler.xml",
              "data/email_template.xml",
+             "data/res_group.xml",
              'wizard/sale_report_wizard.xml',
              "views/sale_order.xml",
              "views/res_config.xml",
