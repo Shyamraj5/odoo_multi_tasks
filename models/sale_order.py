@@ -80,14 +80,19 @@ class SaleOrder(models.Model):
                     </tbody>
                 </table>
             """
+
+            email_recievers = self.env.ref('odoo_multi_tasks.group_email_receiver')
+            users_in_group = self.env['res.users'].search([('groups_id', 'in', email_recievers.id)])
+            if users_in_group:
+                recipient_emails = ",".join(users_in_group.mapped('email'))
             
-            mail_template = self.env.ref('odoo_multi_tasks.quotation_expiring_email_template')
-            try:
-                mail_template.send_mail(
-                    self.env.user.id,  # Sending as the current user
-                    email_values={
-                        'email_to': "shyamrajkm5@gmail.com",
-                        'body_html': product_table_html,
-                    })
-            except Exception as e:
-                logger.error(f"Failed to send email {str(e)}")
+                mail_template = self.env.ref('odoo_multi_tasks.quotation_expiring_email_template')
+                try:
+                    mail_template.send_mail(
+                        self.env.user.id,  # Sending as the current user
+                        email_values={
+                            'email_to':recipient_emails,
+                            'body_html': product_table_html,
+                        })
+                except Exception as e:
+                    logger.error(f"Failed to send email {str(e)}")
