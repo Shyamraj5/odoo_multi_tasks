@@ -8,7 +8,8 @@
             <div class="header">
                 <div class="row">
                     <div class="col-12" style="text-align: center; padding: 20px;">
-                        <!-- Display only the main company logo -->
+                        <img t-att-src="'/odoo_multi_tasks/static/src/img/logo.png'" alt="Logo" style="width: 150px; height: auto;"/>
+
                        hi this is a header
                     </div>
                 </div>
