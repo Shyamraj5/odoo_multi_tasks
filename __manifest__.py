@@ -16,6 +16,7 @@
              "data/res_group.xml",
              'wizard/sale_report_wizard.xml',
              "views/sale_order.xml",
+             "views/res_partner.xml",
              "views/res_config.xml",
              "views/menu.xml",
              ],
