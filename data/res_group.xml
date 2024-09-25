@@ -14,7 +14,7 @@
         <!-- Define Email Receiver Group -->
         <record id="group_email_receiver" model="res.groups">
             <field name="name">Email Receiver</field>
-            <field name="category_id" ref="module_category_email" />
+            <field name="category_id" ref="omt_category_email" />
         </record>
     </data>
 
