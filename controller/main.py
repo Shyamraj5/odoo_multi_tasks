@@ -60,4 +60,120 @@ class SaleOrderAPIController(http.Controller):
             headers={'Content-Type': 'application/json'})
     
 
+    @http.route('/api/get_all_order',type='http',auth='public',methode=['GET'],csrf=False)
+    def get_so(self,**kwargs):
+        try:
+            # Fetch all sale orders with necessary fields
+            sale_orders = request.env['sale.order'].sudo().search([])
+            sale_order_data = []
+            
+            for data in sale_orders:
+                order_data = {
+                    'id':data.id,
+                    'type_name':data.type_name,
+                    'name':data.name,
+                    'partner_id':data.partner_id.id,
+'                    date_order':data.date_order.strftime('%Y-%m-%d %H:%M:%S') if data.date_order else None,
+                    'state': data.state,
+                    'amount_total': data.amount_total,
+                    'currency': data.currency_id.name,
+                    'amount_tax':data.amount_tax,
+                    'amount_untaxed':data.amount_untaxed,
+                    
+                }
+                sale_order_data.append(order_data)
+
+            response_data = {
+                "success": True,
+                "sale_orders": sale_order_data
+            }
+            return request.make_response(
+                json.dumps(response_data),
+                headers={'Content-Type': 'application/json'}
+            )
+
+        except Exception as e:
+            error_response = {
+                "success": False,
+                "error": str(e)
+            }
+            return request.make_response(
+                json.dumps(error_response),
+                headers={'Content-Type': 'application/json'}
+            )
+        
+
+    @http.route('/api/get_by_partner_details',type='http',auth='public',methods=['POST'],csrf=False)
+    def get_by_details(self,**kwargs):
+
+        try:
+            partner_name = kwargs.get('name')
+            partner_phone = kwargs.get('phone')
+            partner_email = kwargs.get('email')
+
+            domain = []
+            if partner_name:
+                domain.append(('name', 'ilike', partner_name))
+            if partner_phone:
+                domain.append(('phone', 'ilike', partner_phone))
+            if partner_email:
+                domain.append(('email', 'ilike', partner_email))
+
+            partners = request.env['res.partner'].sudo().search(domain)
+
+            if not partners:
+                return request.make_response(
+                    json.dumps({"error": "No partner found with the provided details."}),
+                    headers={'Content-Type': 'application/json'}
+                )
+            
+            sale_orders = request.env['sale.order'].sudo().search([('partner_id', 'in', partners.ids)])
+            
+            sale_order_data = []
+            for order in sale_orders:
+                # Extract order line details
+                order_lines = []
+                for line in order.order_line:
+                    line_data = {
+                        'product_id': line.product_id.id,
+                        'product_name': line.product_id.name,
+                        'quantity': line.product_uom_qty,
+                        'price_unit': line.price_unit,
+                        'subtotal': line.price_subtotal
+                    }
+                    order_lines.append(line_data)
+
+                # Prepare order data
+                order_data = {
+                    'id': order.id,
+                    'name': order.name,
+                    'partner_id': order.partner_id.id,
+                    'partner_name': order.partner_id.name,
+                    'date_order': order.date_order.strftime('%Y-%m-%d %H:%M:%S') if order.date_order else None,
+                    'state': order.state,
+                    'amount_total': order.amount_total,
+                    'currency': order.currency_id.name,
+                    'phone': order.partner_id.phone,
+                    'order_lines': order_lines  # Include the order lines
+                }
+                sale_order_data.append(order_data)
+                response_data = {
+                "success": True,
+                "sale_orders": sale_order_data
+            }
+            return request.make_response(
+                json.dumps(response_data),
+                headers={'Content-Type': 'application/json'}
+            )
+
+        except Exception as e:
+            # Handle any errors during the process
+            error_response = {
+                "success": False,
+                "error": str(e)
+            }
+            return request.make_response(
+                json.dumps(error_response),
+                headers={'Content-Type': 'application/json'}
+            )
 
