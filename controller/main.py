@@ -1,47 +1,63 @@
 from odoo import http
+from odoo.exceptions import ValidationError
+from odoo.http import request, Response
 import json
-import logging
 
-_logger = logging.getLogger(__name__)
+class SaleOrderAPIController(http.Controller):
 
-class TelegramWebhookController(http.Controller):
-    @http.route('/telegram/webhook/receiver', type='json', auth='public', methods=['POST'], csrf=False)
-    def handle_webhook(self, **kwrgs):
+    @http.route('/api/create_sale_order', type='http', auth='public', methods=['POST'], csrf=False)
+    def create_sale_order(self, **kwargs):
+        kwargs = request.get_json_data()
+        partner_id = kwargs.get('partner_id')
+        order_lines = kwargs.get('order_lines')
+
+        # Validate partner_id
+        if not partner_id:
+            return {"error": "partner_id is required."}, 400
+        partner = request.env['res.partner'].sudo().browse(partner_id)
+        if not partner.exists():
+            return {"error": f"Partner with ID {partner_id} does not exist."}, 404
+
+        # Validate order_lines
+        if not order_lines or not isinstance(order_lines, list):
+            return {"error": "order_lines must be a non-empty list."}, 400
+
+        sale_order_lines = []
+        for line in order_lines:
+            product_id = line.get('product_id')
+            quantity = line.get('quantity', 1)
+            price_unit = line.get('price_unit', 0.0)
+
+            # Validate product_id
+            product = request.env['product.product'].sudo().browse(product_id)
+            if not product.exists():
+                return {"error": f"Product with ID {product_id} does not exist."}, 404
+
+            # Prepare order line data
+            sale_order_lines.append((0, 0, {
+                'product_id': product_id,
+                'product_uom_qty': quantity,
+                'price_unit': price_unit,
+            }))
+
+        # Create the sale order (quotation)
         try:
-            payload = json.loads(http.request.httprequest.data)
-            _logger.info("Received payload: %s", payload)
-
-            if 'message' in payload:
-                message = payload['message']
-                chat_id = message['chat']['id']
-                text = message.get('text', '')
-                
-                if text == '/start':
-                    response_text = "Welcome to the bot!"
-                else:
-                    response_text = "You said: {}".format(text)
-                
-
-                self.send_message(chat_id, response_text)
-
+            sale_order = request.env['sale.order'].sudo().create({
+                'partner_id': partner_id,
+                'order_line': sale_order_lines,
+            })
         except Exception as e:
-            _logger.error("Error processing webhook: %s", str(e))
-            return {'status': 'error', 'message': str(e)}
+            return {"error": str(e)}, 500
 
-        return {'status': 'success'}
-
-    def send_message(self, chat_id, text):
-        """Send a message to a Telegram chat."""
-        import requests
-        token = 'YOUR_TELEGRAM_BOT_TOKEN'
-        url = f"https://api.telegram.org/bot{6763457916:AAHidTHnMBSlNJiIfBNqfQYnf1cFcZ9WvzU}/sendMessage"
-        payload = {
-            'chat_id': chat_id,
-            'text': text
+        # Return the success response
+        data =  {
+            "success": True,
+            "message": "Sale order created successfully",
+            "sale_order_id": sale_order.id,
+            "sale_order_name": sale_order.name,
         }
-        try:
-            response = requests.post(url, json=payload)
-            response.raise_for_status()
-            _logger.info("Message sent successfully")
-        except requests.RequestException as e:
-            _logger.error("Error sending message: %s", str(e))
+        return request.make_response(http.json.dumps(data),
+            headers={'Content-Type': 'application/json'})
+    
+
+
