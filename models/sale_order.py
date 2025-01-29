@@ -96,3 +96,26 @@ class SaleOrder(models.Model):
                         })
                 except Exception as e:
                     logger.error(f"Failed to send email {str(e)}")
+    
+
+
+
+    def get_dashboard_stats(self):
+       
+        total_order_value = sum(self.search([]).mapped('amount_total'))
+
+        # Open orders (orders with 'draft' or 'sent' state)
+        open_orders = len(self.search([('state', 'in', ['draft', 'sent'])]))
+
+        # Confirmed orders (orders with 'sale' state)
+        confirmed_orders = len(self.search([('state', '=', 'sale')]))
+
+        # Pending orders (orders with 'quotation' state)
+        pending_orders = len(self.search([('state', '=', 'draft')]))
+
+        return {
+            'total_order_value': total_order_value,
+            'open_orders': open_orders,
+            'confirmed_orders': confirmed_orders,
+            'pending_orders': pending_orders,
+        }

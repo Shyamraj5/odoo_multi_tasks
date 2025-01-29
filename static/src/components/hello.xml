@@ -1,0 +1,86 @@
+<template xml:space="preserve">
+    <t t-name="sale_order_dashboard.SaleOrderTemplate" owl="1">
+        <!-- Quick Info Section -->
+        <div class="container mt-3">
+            <div class="row text-center g-4">
+                <!-- Sale Price Card -->
+                <div class="col-lg-3">
+                    <div class="card border-primary shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                <i class="fa fa-dollar-sign fa-2x text-primary me-2"></i>
+                                <h5 class="card-title mb-0">Total Sale Price</h5>
+                            </div>
+                            <p class="fw-bold text-primary fs-4" t-esc="state.totalSalePrice"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profit Card -->
+                <div class="col-lg-3">
+                    <div class="card border-success shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                <i class="fa fa-chart-line fa-2x text-success me-2"></i>
+                                <h5 class="card-title mb-0">Total Profit</h5>
+                            </div>
+                            <p class="fw-bold text-success fs-4" t-esc="state.totalProfit"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Sold Card -->
+                <div class="col-lg-3">
+                    <div class="card border-warning shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                <i class="fa fa-box fa-2x text-warning me-2"></i>
+                                <h5 class="card-title mb-0">Total Products Sold</h5>
+                            </div>
+                            <p class="fw-bold text-warning fs-4" t-esc="state.totalProducts"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Orders Card -->
+                <div class="col-lg-3">
+                    <div class="card border-danger shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                <i class="fa fa-shopping-cart fa-2x text-danger me-2"></i>
+                                <h5 class="card-title mb-0">Total Orders</h5>
+                            </div>
+                            <p class="fw-bold text-danger fs-4" t-esc="state.totalOrders"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Month Filter -->
+            <div class="row mt-4">
+                <div class="col-lg-4 offset-lg-4">
+                    <div class="card border-info shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fa fa-calendar fa-lg text-info me-2"></i>
+                                <label for="monthFilter" class="form-label mb-0">Filter by Month:</label>
+                            </div>
+                            <select id="monthFilter" class="form-select" t-on-change="updateMonthFilter">
+                                <option t-foreach="['2025-01', '2025-02', '2025-03', '2025-04']" t-as="month" t-key="month" t-esc="month"/>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="container mt-4">
+            <div class="card border-secondary shadow">
+                <div class="card-body">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
