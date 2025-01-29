@@ -8,6 +8,7 @@
         <field name="arch" type="xml">  
             <xpath expr="//page[@name='sales_purchases']" position="inside">
                 <field name="total_sales"/>
+                
             </xpath>
         </field>
     </record>

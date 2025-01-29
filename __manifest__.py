@@ -5,7 +5,7 @@
     'author': 'shyamraj',
     'website': 'https://github.com/Shyamraj5',
     'category': 'Sales',
-    'depends': ['sale','stock','base'],
+    'depends': ['sale','stock','base','web'],
     'data': [
              "security/ir.model.access.csv",
              "report/daily_sales_report_views.xml",
@@ -20,6 +20,13 @@
              "views/res_config.xml",
              "views/menu.xml",
              ],
+    'assets': {
+        'web.assets_backend': [
+            'odoo_multi_tasks/static/src/components/*.js',
+            "odoo_multi_tasks/static/src/components/calender.js",
+            'odoo_multi_tasks/static/src/components/*.xml',
+        ],
+    },
     'installable': True,
     'auto_install': False,
 }
